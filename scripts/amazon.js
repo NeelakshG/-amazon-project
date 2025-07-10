@@ -1,5 +1,5 @@
 import { cart } from "../data/cart.js";
-
+import { products } from "../data/products.js";
 // modules help with naming conflict,
 let productsHTML = "";
 
