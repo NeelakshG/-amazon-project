@@ -1,31 +1,37 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import {addToCart, cart, loadFromStorage} from '../../data/cart.js';
 
-console.log("test suite: formatCurrency");
-console.log("converting cents into dollars");
-//basic test cases
-if (formatCurrency(2095) === "20.95") {
-  console.log("passed");
-} else {
-  console.log("failed");
-}
+describe('test suite: addToCart', () => {
+  it('adds an existing product to the cart', () => {
+    spyOn(localStorage, 'setItem');
 
-console.log("works the 0");
-//edge cases
-if (formatCurrency(0) === "0.00") {
-  console.log("passed");
-} else {
-  console.log("failed");
-}
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return JSON.stringify([{
+        productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+        quantity: 1,
+        deliveryOptionId: '1'
+      }]);
+    });
+    loadFromStorage();
 
-console.log("rounds up to the nearest cent");
-if (formatCurrency(2000.5) === "20.01") {
-  console.log("passed");
-} else {
-  console.log("failed");
-}
+    addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart.length).toEqual(1);
+    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(cart[0].productId).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart[0].quantity).toEqual(2);
+  });
 
-if (formatCurrency(2000.4) === "20.00") {
-  console.log("passed");
-} else {
-  console.log("failed");
-}
+  it('adds a new product to the cart', () => {
+    spyOn(localStorage, 'setItem');
+
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return JSON.stringify([]);
+    });
+    loadFromStorage();
+
+    addToCart('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart.length).toEqual(1);
+    expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(cart[0].productId).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+    expect(cart[0].quantity).toEqual(1);
+  });
+});
