@@ -7,18 +7,20 @@ export function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
 
-  cart.forEach((cartItem) => {
+  cart.forEach((cartItem) => { //go through each element of the cart
     const product = getProduct(cartItem.productId);
-    productPriceCents += product.priceCents * cartItem.quantity;
+    productPriceCents += product.priceCents * cartItem.quantity; //add the price into the variable
 
     const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-    shippingPriceCents += deliveryOption.priceCents;
+    shippingPriceCents += deliveryOption.priceCents; //add the shipping tax
   });
 
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
   const taxCents = totalBeforeTaxCents * 0.1;
-  const totalCents = totalBeforeTaxCents + taxCents;
+  const totalCents = totalBeforeTaxCents + taxCents; //update the total cost
 
+
+  //generate the updated paymentSummaryHTML with the associated money values
   const paymentSummaryHTML = `
     <div class="payment-summary-title">
       Order Summary
@@ -64,5 +66,6 @@ export function renderPaymentSummary() {
     </button>
   `;
 
+  //set the payment summary div into this value
   document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
 }

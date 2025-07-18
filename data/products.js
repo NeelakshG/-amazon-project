@@ -1,6 +1,8 @@
+//to get product, 
 export function getProduct(productId) {
   let matchingProduct;
 
+  //compare the ids in the array with the product id chosen, if so return that matchingProduct
   products.forEach((product) => {
     if (product.id === productId) {
       matchingProduct = product;

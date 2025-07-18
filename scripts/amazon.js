@@ -5,6 +5,8 @@ import { formatCurrency } from "./utils/money.js";
 // modules help with naming conflict,
 let productsHTML = "";
 
+
+//dynamically creating a template for each product, we use the product array and take in whatever data we need ot take 
 products.forEach((product) => {
   productsHTML += `
     <div class="product-container">
@@ -59,24 +61,29 @@ products.forEach((product) => {
   `;
 });
 
+//after adding each product, we add all of this into the grid
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
 
 function updateCartQuantity() {
   let cartQuantity = 0;
 
+  //getting the cartQuantity by going through the cart and adding each value of quantity
   cart.forEach((cartItem) => {
     cartQuantity += cartItem.quantity;
   });
-
+  //now we update the website by setting the html to whatever value we get
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
+//to ensure this happens, we listen to whenever user clicks the addCart button, when thats clicked, we retrieve the id and call a function while
+//simoulensouly update the cart
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
-    const productId = button.dataset.productId;
+    const productId = button.dataset.productId; //retrieves the data value of product-id in the html
     ``;
 
-    addToCart(productId);
-    updateCartQuantity();
+    addToCart(productId); //add it to the cart
+    updateCartQuantity(); //update the cart quantity
   });
 });

@@ -13,18 +13,18 @@ export function renderOrderSummary() {
   let cartSummaryHTML = "";
 
   cart.forEach((cartItem) => {
+    //retrieving all the information of the product
     const productId = cartItem.productId;
-
     const matchingProduct = getProduct(productId);
-
     const deliveryOptionId = cartItem.deliveryOptionId;
-
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
+    // getting the date using a framework
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDay, "days");
     const dateString = deliveryDate.format("dddd, MMMM D");
 
+    //creatingt the template for how the cartSummary should look
     cartSummaryHTML += `
       <div class="cart-item-container
         js-cart-item-container-${matchingProduct.id}">
@@ -71,6 +71,9 @@ export function renderOrderSummary() {
     `;
   });
 
+  //dynamically setting the delievery options template for every object
+  //matchingProduct tells you all about the produt itself
+  //cartItem tells you aout the cart
   function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = "";
 
@@ -79,6 +82,7 @@ export function renderOrderSummary() {
       const deliveryDate = today.add(deliveryOption.deliveryDay, "days");
       const dateString = deliveryDate.format("dddd, MMMM D");
 
+      //figuring out how to print the figure
       const priceString =
         deliveryOption.priceCents === 0
           ? "FREE"
@@ -86,6 +90,7 @@ export function renderOrderSummary() {
 
       const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
+      //generating the delievery template
       html += `
         <div class="delivery-option js-delivery-option"
           data-product-id="${matchingProduct.id}"
@@ -109,28 +114,31 @@ export function renderOrderSummary() {
     return html;
   }
 
+  //then this div will store tthe entire template
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
 
+  //if the delete is clicked at any point
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
-      const productId = link.dataset.productId;
-      removeFromCart(productId);
+      const productId = link.dataset.productId; //we figure out which data was removed
+      removeFromCart(productId); //then we remove it off the caart
 
       const container = document.querySelector(
         `.js-cart-item-container-${productId}`
       );
-      container.remove();
+      container.remove(); //we remove the container for that item out too
 
       renderPaymentSummary();
     });
   });
 
   document.querySelectorAll(".js-delivery-option").forEach((element) => {
+    //listen for an event "click" happening when changing the deliviery option
     element.addEventListener("click", () => {
       const { productId, deliveryOptionId } = element.dataset;
-      updateDeliveryOption(productId, deliveryOptionId);
-      renderOrderSummary();
-      renderPaymentSummary();
+      updateDeliveryOption(productId, deliveryOptionId); //update the delivery option
+      renderOrderSummary(); //this adjusts the html of the container that updates when a delievery option is updated (the timeline is updated)
+      renderPaymentSummary(); //this updates the html component that updates the cost of the item + tax
     });
   });
 }

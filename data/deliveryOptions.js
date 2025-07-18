@@ -1,3 +1,5 @@
+//an array that stores the different delivery options
+
 export const deliveryOptions = [
   {
     id: "1",
@@ -16,14 +18,16 @@ export const deliveryOptions = [
   },
 ];
 
+
 export function getDeliveryOption(deliveryOptionId) {
   let deliveryOption;
-
+  //go through the array of options, then check if any of those match the optionID user clicks on
   deliveryOptions.forEach((option) => {
     if (option.id === deliveryOptionId) {
-      deliveryOption = option;
+      deliveryOption = option; 
     }
   });
 
+  //if so return either, that option, or return the 0th index incase user somehow clicks the wrong thing
   return deliveryOption || deliveryOptions[0];
 }
