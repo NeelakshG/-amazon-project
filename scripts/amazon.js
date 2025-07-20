@@ -5,8 +5,7 @@ import { formatCurrency } from "./utils/money.js";
 // modules help with naming conflict,
 let productsHTML = "";
 
-
-//dynamically creating a template for each product, we use the product array and take in whatever data we need ot take 
+//dynamically creating a template for each product, we use the product array and take in whatever data we need ot take
 products.forEach((product) => {
   productsHTML += `
     <div class="product-container">
@@ -46,6 +45,8 @@ products.forEach((product) => {
         </select>
       </div>
 
+      ${product.extraInfoHTML()}
+      
       <div class="product-spacer"></div>
 
       <div class="added-to-cart">
@@ -63,7 +64,6 @@ products.forEach((product) => {
 
 //after adding each product, we add all of this into the grid
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
-
 
 function updateCartQuantity() {
   let cartQuantity = 0;

@@ -1,4 +1,8 @@
+//created a class so that we can use inheritence and keep the code modular 
+//--  reason we did this is because lets say we want multiple carts, instead of reusing code we can set up a general cart such that any cart can use these functionalities
+
 class Cart {
+  //public and private variables --respectively
   cartItems;
   #localStorageKey;
 
@@ -8,7 +12,7 @@ class Cart {
   }
 
   #loadFromStorage() {
-    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)); //each type of cart has its own localstorage
 
     if (!this.cartItems) {
       this.cartItems = [{
@@ -24,7 +28,7 @@ class Cart {
   }
 
   saveToStorage() {
-    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems)); //each type of cart saves to its own local storage
   }
 
   addToCart(productId) {
